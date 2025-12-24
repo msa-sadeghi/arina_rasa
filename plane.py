@@ -30,4 +30,27 @@ class Airplane:
             if self.frame_index >= len(self.all_images[self.animation]):
                 self.frame_index = 0
 
+    def move(self):
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_LEFT]:
+            self.rect.x -= self.speed
+        if keys[pygame.K_RIGHT]:
+            self.rect.x += self.speed
+        if keys[pygame.K_UP]:
+            self.rect.y -= self.speed
+        if keys[pygame.K_DOWN]:
+            self.rect.y += self.speed
+
+        if keys[pygame.K_SPACE]:
+            self.change_animation("Shoot")
+        else:
+            self.change_animation("Fly")
+
+
+    def change_animation(self, new_animation):
+        if new_animation != self.animation:
+            self.animation = new_animation
+            self.frame_index = 0
+
+
     

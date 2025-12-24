@@ -22,4 +22,5 @@ while running:
             running = False
     screen.blit(bg_image, (0,0))
     plane1.draw(screen)
+    plane1.move()
     pygame.display.update()
