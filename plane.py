@@ -1,5 +1,6 @@
 import pygame
 import os
+from bullet import Bullet
 class Airplane:
     def __init__(self, x,y, speed, ammo):
         self.all_images = {}
@@ -19,8 +20,10 @@ class Airplane:
         self.frame_index = 0
         self.animation = "Fly"
         self.time_left = 0
+        self.bullet_group = pygame.sprite.Group()
     def draw(self, screen):
         screen.blit(self.image, self.rect)
+        self.bullet_group.update()
         self.do_animation()
     def do_animation(self):
         self.image = self.all_images[self.animation][self.frame_index]
@@ -43,6 +46,8 @@ class Airplane:
 
         if keys[pygame.K_SPACE]:
             self.change_animation("Shoot")
+            Bullet(self.rect.x, self.rect.y, self.bullet_group)
+            print(len(self.bullet_group))
         else:
             self.change_animation("Fly")
 
