@@ -1,6 +1,7 @@
 import pygame
 import os
 from bullet import Bullet
+
 class Airplane:
     def __init__(self, x,y, speed, ammo):
         self.all_images = {}
@@ -21,10 +22,18 @@ class Airplane:
         self.animation = "Fly"
         self.time_left = 0
         self.bullet_group = pygame.sprite.Group()
-    def draw(self, screen):
+        self.last_shoot_time = pygame.time.get_ticks()
+    def draw(self, screen, jelly_group,score):
         screen.blit(self.image, self.rect)
-        self.bullet_group.update()
+        
+        for bullet in self.bullet_group.sprites():
+
+            score = bullet.update(jelly_group, score)
+        
+        
+        self.bullet_group.draw(screen)
         self.do_animation()
+        return score
     def do_animation(self):
         self.image = self.all_images[self.animation][self.frame_index]
         if pygame.time.get_ticks() - self.time_left >= 100:
@@ -44,9 +53,10 @@ class Airplane:
         if keys[pygame.K_DOWN]:
             self.rect.y += self.speed
 
-        if keys[pygame.K_SPACE]:
+        if keys[pygame.K_SPACE] and pygame.time.get_ticks() -self.last_shoot_time > 200:
+            self.last_shoot_time = pygame.time.get_ticks()
             self.change_animation("Shoot")
-            Bullet(self.rect.x, self.rect.y, self.bullet_group)
+            Bullet(self.rect.bottomright[0]-30, self.rect.bottomright[1]-40, self.bullet_group)
             print(len(self.bullet_group))
         else:
             self.change_animation("Fly")
