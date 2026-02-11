@@ -8,8 +8,8 @@ class Airplane:
         self.animation_types = ("Fly", "Shoot", "Dead")
         for animation in self.animation_types:
             img_list = []
-            for img_path in os.listdir(f"Plane/{animation}"):
-                img = pygame.image.load(f"Plane/{animation}/{img_path}")
+            for img_path in os.listdir(f"assets/Plane/{animation}"):
+                img = pygame.image.load(f"assets/Plane/{animation}/{img_path}")
                 img = pygame.transform.scale_by(img, 0.3)
                 img_list.append(img)
             self.all_images[animation] = img_list
@@ -18,6 +18,7 @@ class Airplane:
         self.rect = self.image.get_rect(center = (x,y))
         self.speed = 5
         self.ammo = ammo
+        self.health = 5
         self.frame_index = 0
         self.animation = "Fly"
         self.time_left = 0
@@ -57,7 +58,7 @@ class Airplane:
             self.last_shoot_time = pygame.time.get_ticks()
             self.change_animation("Shoot")
             Bullet(self.rect.bottomright[0]-30, self.rect.bottomright[1]-40, self.bullet_group)
-            print(len(self.bullet_group))
+            self.ammo -= 1
         else:
             self.change_animation("Fly")
 

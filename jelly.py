@@ -8,7 +8,11 @@ class Jelly(Sprite):
         self.rect = self.image.get_rect(topleft=(x,y))
         group.add(self)
 
-    def update(self):
+    def update(self, plane):
+        if plane.rect.colliderect(self.rect):
+            self.kill()
+            plane.health -= 1
+
         self.rect.x -= random.randint(1,3)
         if self.rect.x <= 0:
             self.kill()
